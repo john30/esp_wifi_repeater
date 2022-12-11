@@ -2358,7 +2358,11 @@ void ICACHE_FLASH_ATTR console_handle_command(struct espconn *pespconn)
                     os_sprintf_flash(response, "Password too long\r\n");
                     goto command_handled;
                 }
-                os_sprintf(config.password, "%s", tokens[2]);
+                if (os_strncmp(config.password, "none", 4) == 0) {
+                    os_sprintf(config.password, "");
+                } else {
+                    os_sprintf(config.password, "%s", tokens[2]);
+                }
                 if (config.automesh_mode != AUTOMESH_OFF)
                 {
                     config.automesh_checked = 0;
